@@ -1,0 +1,67 @@
+# AWS Configuration
+aws_region = "us-east-1"
+
+# Domain Configuration
+# REQUIRED: Set your domain name for ACM certificate and Route53
+domain_name = "imageunderstander.jessespears.com"
+
+# Route53 Configuration
+# Set to true to create a Route53 hosted zone and manage DNS in AWS
+# Set to false if you're managing DNS elsewhere (e.g., Cloudflare, your registrar)
+# If true: DNS will be fully automated (certificate validation, A records)
+# If false: You must manually add DNS records for certificate validation
+create_hosted_zone = false
+
+# Create www subdomain pointing to ALB (only if create_hosted_zone = true)
+create_www_record = true
+
+# Create api subdomain pointing to ALB (only if create_hosted_zone = true)
+# Useful if you want api.yourdomain.com to route to the same ALB
+create_api_record = false
+
+# Route53 Health Check (recommended for production)
+# Creates a health check that monitors the ALB endpoint
+create_route53_health_check = false
+
+# Health check path (used if create_route53_health_check = true)
+# Should be an endpoint that returns 200 OK when healthy
+health_check_path = "/health"
+
+# CORS Configuration
+# Allowed origins for S3 bucket (use specific domains in production)
+allowed_cors_origins = ["https://imageunderstander.jessespears.com", "https://www.imageunderstander.jessespears.com"]
+
+# Database Configuration
+rds_master_username      = "admin"
+database_name            = "imageunderstander"
+mysql_engine_version     = "8.0.39"
+db_instance_class        = "db.t4g.micro"
+db_allocated_storage     = 20
+db_multi_az              = true
+db_backup_retention_period = 7
+db_skip_final_snapshot   = true  # Set to false in production
+db_deletion_protection   = false # Set to true in production
+
+# LLM API Configuration
+# OPTIONAL: Can be updated later via Secrets Manager
+# llm_api_key = "your-llm-api-key-here"
+
+# Logging Configuration
+log_retention_days = 30
+
+# Compute Instance Types
+frontend_instance_type = "t4g.micro"
+backend_instance_type  = "t4g.micro"
+llm_instance_type      = "g5.xlarge"
+chromadb_instance_type = "t3.medium"
+
+# Spot Instance Pricing (max price per hour)
+frontend_spot_max_price = "0.01"
+backend_spot_max_price  = "0.01"
+
+# EBS Volume Sizes (GB)
+llm_ebs_volume_size      = 50
+chromadb_ebs_volume_size = 100
+
+# Load Balancer Configuration
+alb_deletion_protection = false # Set to true in production
